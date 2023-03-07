@@ -1,6 +1,7 @@
-var li=document.getElementsByTagName('li');
-console.log(li);
-for(var i= 0 ;i<li.length; i++)
+var seconditem=document.querySelector('.list-group-item:nth-child(2)');
+seconditem.style.color='coral'
+var odd=document.querySelectorAll('li:nth-child(odd)');
+for(var i=0 ;i<odd.length;i++)
 {
-    li[i].style.backgroundColor="grey"
+    odd[i].style.backgroundColor="green"
 }
