@@ -15,7 +15,7 @@
     <div class="container">
        <form onsubmit="savevalueincookies(event)"; style="border: tomato; background-color: hotpink;">
 <label style="font-weight: bolder;" for="email" class="form-label">Email</label>
-<input type="text"  id="email" name="email" class="form-control">
+<input type="text"  id="email" name="email"  class="form-control">
 <label style="font-size: medium;font-style: normal; font-weight: bolder;" for="mobile" class="form-label">number</label>
 <input type="number"  id="number" name="mobile" class="form-control">
 <br>
@@ -33,10 +33,16 @@
     <script>
       function savevalueincookies(event) {
         event.preventDefault();
-        const email=event.target.email.value;
-        const mobile=event.target.mobile.value;
-        localStorage.setItem("email",email);
-        localStorage.setItem("number",mobile)
+        
+           const email= event.target.email.value;
+        const mobile= event.target.mobile.value;
+       
+        const myobj={
+          email,
+          number
+        }
+        const obj=JSON.stringify(myobj)//changing object to string
+        localStorage.setItem("userdetails",obj)
       }
     </script>
 </body>
