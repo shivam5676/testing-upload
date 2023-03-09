@@ -11,13 +11,12 @@
 </head>
 <body>
     <h1 style="margin-right: auto; background-color: darkgoldenrod; text-align: center;">Welcome to my page</h1>
-    <hr class="container">
-    <div class="container">
-       <form onsubmit="savevalueincookies(event)"; style="border: tomato; background-color: hotpink;">
+
+       <form onsubmit="savevalueinlocalstorage(event)"; style="border: tomato; background-color: hotpink;">
 <label style="font-weight: bolder;" for="email" class="form-label">Email</label>
-<input type="text"  id="email" name="email"  class="form-control">
+<input type="text"  name="email"  class="form-control">
 <label style="font-size: medium;font-style: normal; font-weight: bolder;" for="mobile" class="form-label">number</label>
-<input type="number"  id="number" name="mobile" class="form-control">
+<input type="tel"   name="mobile" class="form-control">
 <br>
 <select><option>male</option>
 <option>female</option>
@@ -29,9 +28,10 @@
 
     
     </form>
-    <ul id="listofitems"></ul>
+    <ul id="listofitems">      
+    </ul>
     <script>
-      function savevalueincookies(event) {
+      function savevalueinlocalstorage(event) {
         event.preventDefault();
         
            const email= event.target.email.value;
@@ -41,15 +41,27 @@
           email,
           mobile
         }
-        const obj=JSON.stringify(myobj)//changing object to string
-        localStorage.setItem("userdetails",obj)
+        //changing object to string
+        localStorage.setItem("userdetails",JSON.stringify(myobj))
         showdetailonscreen(myobj)
       }
      function showdetailonscreen(myobj)
      {
       const parentelem=document.getElementById('listofitems')
-      parentelem.innerHTML=parentelem.innerHTML+'<li>${myobj.mobile} - ${myobj.email}</li>'
-     }
+     const childelem=document.createElement('li')
+     childelem.textContent=myobj.email +"-"+ myobj.mobile
+     parentelem.appendChild(childelem)
+      const deletebtn=document.createElement('input')
+      deletebtn.type="button"
+      deletebtn.value="Delete"
+      deletebtn.onclick=()=>
+      {
+        localStorage.removeItem(myobj.email)
+        parentelem.removeChild(childelem)
+      }
+      childelem.appendChild(deletebtn)
+      parentelem.appendChild(childelem)
+      }
     </script>
 </body>
 </html>
