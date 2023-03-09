@@ -26,10 +26,10 @@
 <br>
 <button>submit</button>
 
-       </form>
-      </hr>
 
-    </div>
+    
+    </form>
+    <ul id="listofitems"></ul>
     <script>
       function savevalueincookies(event) {
         event.preventDefault();
@@ -39,11 +39,17 @@
        
         const myobj={
           email,
-          number
+          mobile
         }
         const obj=JSON.stringify(myobj)//changing object to string
         localStorage.setItem("userdetails",obj)
+        showdetailonscreen(myobj)
       }
+     function showdetailonscreen(myobj)
+     {
+      const parentelem=document.getElementById('listofitems')
+      parentelem.innerHTML=parentelem.innerHTML+'<li>${myobj.mobile} - ${myobj.email}</li>'
+     }
     </script>
 </body>
 </html>
