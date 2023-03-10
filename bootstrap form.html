@@ -14,9 +14,9 @@
 
        <form onsubmit="savevalueinlocalstorage(event)"; style="border: tomato; background-color: hotpink;">
 <label style="font-weight: bolder;" for="email" class="form-label">Email</label>
-<input type="text"  name="email"  class="form-control">
+<input type="text"  name="email"  id="emailinputtag" class="form-control">
 <label style="font-size: medium;font-style: normal; font-weight: bolder;" for="mobile" class="form-label">number</label>
-<input type="tel"   name="mobile" class="form-control">
+<input type="tel"   name="mobile" id="mobileinputtag" class="form-control">
 <br>
 <select><option>male</option>
 <option>female</option>
@@ -49,17 +49,32 @@
      {
       const parentelem=document.getElementById('listofitems')
      const childelem=document.createElement('li')
+
      childelem.textContent=myobj.email +"-"+ myobj.mobile
      parentelem.appendChild(childelem)
-      const deletebtn=document.createElement('input')
-      deletebtn.type="button"
-      deletebtn.value="Delete"
+
+      const deletebtn=document.createElement('input')//delete button creation
+      deletebtn.type="button"//delete button type declaraton
+      deletebtn.value="Delete"//delete buttton value assign
+
+     
       deletebtn.onclick=()=>
       {
         localStorage.removeItem(myobj.email)
         parentelem.removeChild(childelem)
       }
+       const editbtn=document.createElement('input')//edit button creation 
+      editbtn.type='button'//edit button type declaration
+      editbtn.value="Edit"//edit btn value declaration
+      editbtn.onclick = () =>
+      {
+        localStorage.removeItem(myobj.email)
+        parentelem.removeChild(childelem)
+        document.getElementById('emailinputtag').value=myobj.email
+        document.getElementById("mobileinputtag").value=myobj.mobile
+      }
       childelem.appendChild(deletebtn)
+      childelem.appendChild(editbtn)
       parentelem.appendChild(childelem)
       }
     </script>
