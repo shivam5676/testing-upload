@@ -9,7 +9,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
 </head>
 <body>
-    <form onsubmit="saveinlocalstorage(event)"><label for="expense">expense</label>
+    <form onsubmit="saveinlocalstorage(event)">
+        <label for="expense">expense</label>
    <input type="number" name="number" id="expense" required>
    <label for="category"> expense category(type)</label>
    <input type="text" name="category" id="category" required>
@@ -26,6 +27,7 @@
 </form>
    <ul id="list">
     
+    
    </ul>
         
 
@@ -36,21 +38,44 @@ function saveinlocalstorage(event)
     event.preventDefault();
     const expense=event.target.expense.value
 const day=event.target.select.value
-const category=event.target.category.value
+const category=event.target.category.value;
 const myobj={
     expense,
     day,
     category
 }
-localStorage.setItem("userdetails",JSON.stringify(myobj))
+
+axios.post("https://crudcrud.com/api/d94071e435b94611a916cdfedfaca078/EXPENSEDATA",myobj)
+.then((response)=>{
+    console.log(response);
+})
+.catch((err)=>{
+    console.log(err);
+})
+// localStorage.setItem("userdetails",JSON.stringify(myobj))
 detailonscreen(myobj)
 }
+//how to restore data after refresh
+window.addEventListener("DOMContentLoaded",()=>{
+axios.get("https://crudcrud.com/api/d94071e435b94611a916cdfedfaca078/EXPENSEDATA")
+.then((res)=>{
+    console.log(res);
+    for(var i=0;i<res.data.length;i++)
+    {
+        detailonscreen(res.data[i])
+    }
+})
+.catch((err)=>{
+    console.log(err)
+})
+})
 function detailonscreen(myobj)
 {
     const parent=document.getElementById('list')
-    const child=document.createElement('li')
+    const child=document.createElement("li")
+    
     child.style.backgroundColor="red"
-    child.textContent=myobj.day+" -- "+myobj.expense+"(Rupees)"+" -- "+myobj.category;
+    child.textContent=myobj.day+" -- "+myobj.expense+"(Rupees)"+" ---"+myobj.category+"--"+myobj._id;
     parent.appendChild(child)
 
 const deletebtn=document.createElement("input")
@@ -58,8 +83,15 @@ deletebtn.type="button"
 deletebtn.value="delete"
 deletebtn.onclick=()=>
 {
-    localStorage.removeItem(myobj.expense)
-    parent.removeChild(child)
+    axios.delete(`https://crudcrud.com/api/d94071e435b94611a916cdfedfaca078/EXPENSEDATA/${myobj._id}`)
+    .then((response)=>{
+       parent.removeChild(child);
+        console.log("succeessfully deleted")
+    })
+    .catch((err)=>{
+        console.log(err)
+    })
+     
 }
 
 const editbtn=document.createElement('input')
@@ -67,15 +99,32 @@ editbtn.type='button'
 editbtn.value='edit'
 editbtn.onclick=()=>
 {
-localStorage.removeItem(myobj.expense)
-parent.removeChild(child)
+// localStorage.removeItem(myobj.expense)
+parent.removeChild(child);
+axios.delete(`https://crudcrud.com/api/d94071e435b94611a916cdfedfaca078/EXPENSEDATA/${myobj._id}`)
+.then((response)=>{
+    console.log("succesfully edited")
+
+})
+.catch((err)=>{
+    console.log(err);
+})
 document.getElementById("expense").value=myobj.expense
 document.getElementById("day").value=myobj.day
 document.getElementById("category").value=myobj.category
+axios.post("https://crudcrud.com/api/d94071e435b94611a916cdfedfaca078/EXPENSEDATA",myobj)
+.then((response)=>{
+    console.log(response);
+})
+.catch((err)=>{
+    console.log(err);
+})
+
 }
 child.appendChild(deletebtn)
 child.appendChild(editbtn)
 }
 </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.3.4/axios.min.js"></script>
 </body>
 </html>

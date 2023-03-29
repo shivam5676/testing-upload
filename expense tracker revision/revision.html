@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>expense tracker revison</title>
+</head>
+<body>
+    <form onsubmit="savevalueinlocalstorage(event)">
+        <label for="username" id="usernamelabel">username</label>
+    <input type="text" name="username"  id="usernamelabel">
+    <label for="expense">expense</label>
+    <input type="number" name="expense" id="expense">
+    <input type="submit">
+    </form>
+    <ul id="listofitems">
+
+    </ul>
+    <script>
+function savevalueinlocalstorage(event)
+{ 
+    event.preventDefault();
+   const username=event.target.username.value;
+   const expense =event.target.expense.value
+   const myobj=
+   {
+username,
+expense
+   }
+   localStorage.setItem("username",JSON.stringify(myobj))
+showuseronscreen(myobj);
+}
+function showuseronscreen(myobj)
+{
+    const parent=document.getElementById("listofitems")
+    const child=document.createElement("li")
+    child.textContent=myobj.username+"------    "+myobj.expense
+    parent.appendChild(child);
+    const delbtn=document.createElement("input")
+    delbtn.value="delete"
+    delbtn.type="button"
+    delbtn.onclick=()=>
+    {
+        localStorage.removeItem(myobj.expense)
+parent.removeChild(child)
+    }
+    const editbtn=document.createElement("input")
+editbtn.type="button"
+editbtn.value="edit"
+editbtn.onclick=()=>
+{
+    localStorage.removeItem(myobj.expense);
+    parent.removeChild(child);
+    document.getElementById("expense").value=myobj.expense
+    document.getElementById("username").value=myobj.username
+}
+
+
+    child.appendChild(delbtn)
+    child.appendChild(editbtn)
+    
+}
+
+
+
+    </script>
+    
+</body>
+</html>
